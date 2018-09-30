@@ -1,0 +1,82 @@
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+public class Catalogue {
+	
+	private int bookCount;
+	private int readerCount;
+	private int librarianCount;
+	private Map<Integer,Book> books = new HashMap<Integer,Book>();
+	private Map<Integer,Reader> readers = new HashMap<Integer,Reader>();
+	private Map<Integer,Librarian> librarians = new HashMap<Integer,Librarian>();
+	
+	void bookAdd(int _id, String _title, String _author, String _publisher, int _pages, int _year) {
+		if (books.containsKey(_id)) {
+			//error
+		}
+		else {
+			bookCount++;
+		    Book book = new Book(_id,_title, _author, _publisher, _pages, _year);
+		    books.put(_id, book);
+		}
+	};
+	
+	String bookFind(int _id) {
+		Book book = books.get(_id);
+		if (book != null) return book.toString();
+		else return "";
+	}
+	void bookEdit(int _id, String _title, String _author, String _publisher, int _pages, int _year) {
+		Book book = books.get(_id);
+		book.setAuthor(_author);
+		book.setPages(_pages);
+		book.setPublisher(_publisher);
+		book.setTitle(_title);
+		book.setYear(_year);
+	};
+	void bookDelete(int _id) {
+		if (!books.containsKey(_id)) {
+			//error
+		}
+		else {
+			books.remove(_id);
+			bookCount--;
+		}
+		
+	};
+	
+	void readerAdd() {};
+	void readerEdit() {};
+	void readerDelete() {};
+	void libAdd() {};
+	void libEdit() {};
+	void libDelete() {};
+	public int getBookCount() {
+		return bookCount;
+	}
+	public void setBookCount(int bookCount) {
+		this.bookCount = bookCount;
+	}
+	public int getReaderCount() {
+		return readerCount;
+	}
+	public void setReaderCount(int readerCount) {
+		this.readerCount = readerCount;
+	}
+	public int getLibrarianCount() {
+		return librarianCount;
+	}
+	public void setLibrarianCount(int librarianCount) {
+		this.librarianCount = librarianCount;
+	}
+	
+	Catalogue() {
+		bookCount = 0;
+		readerCount = 0;
+		librarianCount = 0;
+		
+	}
+}
+

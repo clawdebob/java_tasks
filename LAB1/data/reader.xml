@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<readers>
+  <reader>
+    <id>1</id>
+    <name>Александр</name>
+    <surname>Ясеновский</surname>
+    <patronymic>Сергеевич</patronymic>
+    <telephone>+74953100284</telephone>
+    <birthday>05.08.1998</birthday>
+    <adress>Москва</adress>
+  </reader>
+  <reader>
+    <id>2</id>
+    <name>Андрей</name>
+    <surname>Булгару</surname>
+    <patronymic>Орестович</patronymic>
+    <telephone>+78005553535</telephone>
+    <birthday>12.12.1998</birthday>
+    <adress>Медведково</adress>
+  </reader>
+</readers>

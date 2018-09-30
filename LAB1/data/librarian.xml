@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<librarians>
+  <librarian>
+    <id>1</id>
+    <name>Никита</name>
+    <surname>Языков</surname>
+    <patronymic>Григорьевич</patronymic>
+    <telephone>+74957008009</telephone>
+    <birthday>21.03.1999</birthday>
+    <adress>Москва</adress>
+    <salary>20000</salary>
+    <experience>100000</experience>
+  </librarian>
+  <librarian>
+    <id>2</id>
+    <name>Сергей</name>
+    <surname>Набатов</surname>
+    <patronymic>Орестович</patronymic>
+    <telephone>+78005553535</telephone>
+    <birthday>27.08.1999</birthday>
+    <adress>Москва</adress>
+    <salary>4000</salary>
+    <experience>500000</experience>
+  </librarian>
+</librarians>
