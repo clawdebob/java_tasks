@@ -1,19 +1,5 @@
-<?xml version="1.0"?>
-<books>
-<book>
-    <id>1</id>
-    <author>Э. Таненбаум</author>
-    <title>Современные операционные системы</title>
-    <year>2013</year>
-    <pages>1120</pages>
-    <publisher>Питер</publisher>
- </book>
-<book>
-    <id>2</id>
-    <author>Э. Таненбаум, Т. Остин</author>
-    <title>Архитектура компьютера</title>
-    <year>2013</year>
-    <pages>816</pages>
-    <publisher>Питер</publisher>
- </book>
+<?xml version="1.0"?> 
+<books><book><id>1</id><author>Э. Таненбаум</author><title>Современные операционные системы</title><year>2013</year><pages>1120</pages><publisher>Питер</publisher></book>
+<book><id>2</id><author>Э. Таненбаум, Т. Остин</author><title>Архитектура компьютера</title><year>2013</year><pages>816</pages><publisher>Питер</publisher></book>
+<book><id>3</id><author>fff</author><title>fff</title><year>2010</year><pages>11</pages><publisher>fff</publisher></book>
 </books>

@@ -4,20 +4,16 @@ import javax.xml.parsers.*;
 
 import org.w3c.dom.*;
 
-import entities.Catalogue;
-
 public class Main {
-	static Catalogue catalogue = new Catalogue();
+	static Catalogue catalogue = new Catalogue();;
 
 	public static void main(String[] args) {
-		booksFromXML("F:\\git\\javaprojects\\LAB1\\data\\book.xml");
-		catalogue.bookAdd(3,"fff", "fff", "fff", 11, 2010);
-		booksToXML("F:\\git\\javaprojects\\LAB1\\data\\book.xml");
+		booksShow("F:\\git\\javaprojects\\LAB1\\data\\book.xml");
 		readersShow("F:\\git\\javaprojects\\LAB1\\data\\reader.xml");
 		librariansShow("F:\\git\\javaprojects\\LAB1\\data\\librarian.xml");
 	}
 	
-	static void booksFromXML(String path) {
+	static void booksShow(String path) {
 		 File fXml=new File(path);
 	        
 	        try
@@ -78,7 +74,6 @@ public class Main {
 	        }
 	        catch(Exception ei){}
 	    }
-	
 	
 	static void readersShow(String path) {
 		 File fXml=new File(path);
@@ -145,35 +140,6 @@ public class Main {
 	        }
 	        catch(Exception ei){}
 	    }
-	static void booksToXML(String path) {
-		FileOutputStream fileOutputStream = null;
-		BufferedWriter bufferedWriter = null;
-		try {
-			fileOutputStream = new FileOutputStream(path);
-			bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream, "UTF-8"));
-		
-			String booksXML = catalogue.booksToXML();
-			bufferedWriter.append(booksXML);
-			bufferedWriter.flush();
-			
-		} catch (IOException ex) {
-			// handle exception
-		} finally { try {
-			bufferedWriter.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			fileOutputStream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			
-		}			  
-	}
-
 	static void librariansShow(String path) {
 		 File fXml=new File(path);
 	        

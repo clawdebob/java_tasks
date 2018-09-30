@@ -7,7 +7,7 @@ import org.w3c.dom.*;
 import entities.Catalogue;
 
 public class Main {
-	static Catalogue catalogue = new Catalogue();
+	static Catalogue catalogue = new Catalogue();;
 
 	public static void main(String[] args) {
 		booksFromXML("F:\\git\\javaprojects\\LAB1\\data\\book.xml");
