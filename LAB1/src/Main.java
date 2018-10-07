@@ -13,8 +13,10 @@ public class Main {
 		booksFromXML("F:\\git\\javaprojects\\LAB1\\data\\book.xml");
 		catalogue.bookAdd(3,"fff", "fff", "fff", 11, 2010);
 		booksToXML("F:\\git\\javaprojects\\LAB1\\data\\book.xml");
-		readersShow("F:\\git\\javaprojects\\LAB1\\data\\reader.xml");
-		librariansShow("F:\\git\\javaprojects\\LAB1\\data\\librarian.xml");
+		readersFromXML("F:\\git\\javaprojects\\LAB1\\data\\reader.xml");
+		readersToXML("F:\\git\\javaprojects\\LAB1\\data\\reader.xml");
+		librariansFromXML("F:\\git\\javaprojects\\LAB1\\data\\librarian.xml");
+		//librariansToXML("F:\\git\\javaprojects\\LAB1\\data\\librarian.xml");
 	}
 	
 	static void booksFromXML(String path) {
@@ -80,7 +82,7 @@ public class Main {
 	    }
 	
 	
-	static void readersShow(String path) {
+	static void readersFromXML(String path) {
 		 File fXml=new File(path);
 	        
 	        try
@@ -145,36 +147,7 @@ public class Main {
 	        }
 	        catch(Exception ei){}
 	    }
-	static void booksToXML(String path) {
-		FileOutputStream fileOutputStream = null;
-		BufferedWriter bufferedWriter = null;
-		try {
-			fileOutputStream = new FileOutputStream(path);
-			bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream, "UTF-8"));
-		
-			String booksXML = catalogue.booksToXML();
-			bufferedWriter.append(booksXML);
-			bufferedWriter.flush();
-			
-		} catch (IOException ex) {
-			// handle exception
-		} finally { try {
-			bufferedWriter.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			fileOutputStream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			
-		}			  
-	}
-
-	static void librariansShow(String path) {
+	static void librariansFromXML(String path) {
 		 File fXml=new File(path);
 	        
 	        try
@@ -247,9 +220,90 @@ public class Main {
 	        }
 	        catch(Exception ei){}
 	    }
-
-	
-
+	static void booksToXML(String path) {
+		FileOutputStream fileOutputStream = null;
+		BufferedWriter bufferedWriter = null;
+		try {
+			fileOutputStream = new FileOutputStream(path);
+			bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream, "UTF-8"));
+		
+			String booksXML = catalogue.booksToXML();
+			bufferedWriter.append(booksXML);
+			bufferedWriter.flush();
+			
+		} catch (IOException ex) {
+			// handle exception
+		} finally { try {
+			bufferedWriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			fileOutputStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		}			  
+	}
+	static void readersToXML(String path) {
+		FileOutputStream fileOutputStream = null;
+		BufferedWriter bufferedWriter = null;
+		try {
+			fileOutputStream = new FileOutputStream(path);
+			bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream, "UTF-8"));
+		
+			String booksXML = catalogue.readersToXML();
+			bufferedWriter.append(booksXML);
+			bufferedWriter.flush();
+			
+		} catch (IOException ex) {
+			// handle exception
+		} finally { try {
+			bufferedWriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			fileOutputStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		}			  
+	}
+	static void librariansToXML(String path) {
+		FileOutputStream fileOutputStream = null;
+		BufferedWriter bufferedWriter = null;
+		try {
+			fileOutputStream = new FileOutputStream(path);
+			bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream, "UTF-8"));
+		
+			String booksXML = catalogue.librariansToXML();
+			bufferedWriter.append(booksXML);
+			bufferedWriter.flush();
+			
+		} catch (IOException ex) {
+			// handle exception
+		} finally { try {
+			bufferedWriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			fileOutputStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		}			  
+	}
 
 	}
 

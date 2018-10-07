@@ -165,6 +165,44 @@ public class Catalogue {
 		xmlString+= "</books>";
 		return xmlString;
 	};
+	public String readersToXML (){
+		String xmlString = "<?xml version=\"1.0\"?> \r\n<readers>";
+		for (Map.Entry<Integer, Reader> entry : readers.entrySet()) {
+		    
+		    Reader reader = entry.getValue();
+		    xmlString += "<reader>";
+		    xmlString+= "<id>"+reader.getId()+"</id>";
+		    xmlString+= "<name>"+reader.getName()+"</name>";
+		    xmlString+= "<surname>"+reader.getSurname()+"</surname>";
+		    xmlString+= "<patronymic>"+reader.getPatronymic()+"</patronymic>";
+		    xmlString+= "<telephone>"+reader.getTelephone()+"</telephone>";
+		    xmlString+= "<birthday>"+reader.getBirthday()+"</birthday>";
+		    xmlString+= "<adress>"+reader.getAdress()+"</adress>";
+		    xmlString+= "</reader>\r\n";
+		}
+		xmlString+= "</readers>";
+		return xmlString;
+	};
+	public String librariansToXML (){
+		String xmlString = "<?xml version=\"1.0\"?> \r\n<librarians>";
+		for (Map.Entry<Integer, Librarian> entry :librarians.entrySet()) {
+		    
+		    Librarian reader = entry.getValue();
+		    xmlString += "<librarian>";
+		    xmlString+= "<id>"+reader.getId()+"</id>";
+		    xmlString+= "<name>"+reader.getName()+"</name>";
+		    xmlString+= "<surname>"+reader.getSurname()+"</surname>";
+		    xmlString+= "<patronymic>"+reader.getPatronymic()+"</patronymic>";
+		    xmlString+= "<telephone>"+reader.getTelephone()+"</telephone>";
+		    xmlString+= "<birthday>"+reader.getBirthday()+"</birthday>";
+		    xmlString+= "<adress>"+reader.getAdress()+"</adress>";
+		    xmlString+= "<salary>"+reader.getSalary()+"</salary>";
+		    xmlString+= "<experience>"+reader.getExperience()+"</experience>";
+		    xmlString+= "</librarian>\r\n";
+		}
+		xmlString+= "</librarians>";
+		return xmlString;
+	};
 
 	
 	public Catalogue() {
