@@ -17,9 +17,9 @@ import com.google.gson.JsonSyntaxException;
 
 
 public class warehouse {
-	private static HashMap<Integer,person> persons = new HashMap<Integer,person>();
-	private static HashMap<Integer,product> products = new HashMap<Integer,product>();
-	private static HashMap<Integer,operation> operations = new HashMap<Integer,operation>();
+	public static HashMap<Integer,person> persons = new HashMap<Integer,person>();
+	public static HashMap<Integer,product> products = new HashMap<Integer,product>();
+	public static HashMap<Integer,operation> operations = new HashMap<Integer,operation>();
 	static GsonBuilder builder = new GsonBuilder();
 	static Gson gson = builder.create();
 	public static void JSONtoProduct() throws FileNotFoundException, IOException{
@@ -121,5 +121,26 @@ public class warehouse {
 		    operation pr = new operation(person,product,quantity,id,date);
 		    operations.put(id, pr);
 		}
+	}
+	public String SearchProduct(String param,String val) {
+		ArrayList<product> obj = new ArrayList<product>();
+		for(Map.Entry<Integer, product> entry : products.entrySet()) {
+			product p = entry.getValue();
+			switch(param) {
+			case "type":
+				if(p.getType() == Integer.parseInt(val)) {
+					obj.add(p);
+				}
+				break;
+			case "time":
+				if(p.getChars().getTime() == val) {
+					obj.add(p);
+				}
+				break;
+			}
+			obj.add(p);
+			System.out.println("GSON:" + gson.toJson(p));
+		}
+		return gson.toJson(obj);
 	}
 }
