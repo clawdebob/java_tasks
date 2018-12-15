@@ -152,13 +152,14 @@ public class warehouse{
 		    operations.put(id, pr);
 		}
 	}
-	public String SearchProduct(String param,String val) {
+	public static String SearchProduct(String param,String val) {
 		ArrayList<product> obj = new ArrayList<product>();
 		for(Map.Entry<Integer, product> entry : products.entrySet()) {
 			product p = entry.getValue();
 			switch(param) {
 			case "type":
 				if(p.getType() == Integer.parseInt(val)) {
+					System.out.println(p.getType());
 					obj.add(p);
 				}
 				break;
@@ -167,9 +168,18 @@ public class warehouse{
 					obj.add(p);
 				}
 				break;
+			case "room":
+				if(p.getRoom() == Integer.parseInt(val)) {
+					obj.add(p);
+				}
+				break;
+			case "desk":
+				if(p.getDesk() == Integer.parseInt(val)) {
+					obj.add(p);
+				}
+				break;
 			}
-			obj.add(p);
-			System.out.println("GSON:" + gson.toJson(p));
+			//System.out.println("GSON:" + gson.toJson(p));
 		}
 		return gson.toJson(obj);
 	}

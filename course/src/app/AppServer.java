@@ -248,6 +248,11 @@ class ServerConnectionProcessor extends Thread {
 				warehouse.persons.remove(id);
 				outStream.writeUTF(warehouse.PersonsToJSON());
      			break;
+     		case "SearchProduct":
+				name = query.data.get("param");
+				String aram = query.data.get("value");
+				outStream.writeUTF(warehouse.SearchProduct(name, aram));
+     			break;
      		case "AddOperation":
          		id = Integer.parseInt(query.data.get("id"));
          		Date date = format.parse(query.data.get("date")+" 12:00:00 PM");
