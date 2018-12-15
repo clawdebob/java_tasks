@@ -10,23 +10,22 @@ import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 class Server {
+	private static ServerSocket ss;
 	public static void main(String[] args){
-		try {
-			warehouse.JSONtoOperation();
-			warehouse.JSONtoProduct();
-			warehouse.JSONtoPerson();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		warehouse.init();
 		try {
 			System.out.println("Server is running");
 			int port = 3334;
 			// создание серверного сокета
-			ServerSocket ss = new ServerSocket(port);
+			 ss = new ServerSocket(port);
 			// Ждет клиентов и для каждого создает отдельный поток
 			while (true) {
 				Socket s = ss.accept();
@@ -35,19 +34,23 @@ class Server {
 			}
 		}
 		catch(Exception e) { System.out.println(e);}
+		try {
+			ss.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
 }
+
 
 class ServerConnectionProcessor extends Thread {
 	private Socket sock;
+	public transient static DateFormat format = new SimpleDateFormat("MMM d, yyyy HH:mm:ss a", Locale.ENGLISH);
 	public ServerConnectionProcessor(Socket s) {
 		sock = s;
 	}
 	public void run() {
-		JFrame myWindow = new JFrame("Пробное окно");
-		myWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		myWindow.setSize(400, 300);
-		myWindow.setVisible(true);
 
 		try {
 			// Получает запрос
@@ -79,8 +82,14 @@ class ServerConnectionProcessor extends Thread {
     			int width = Integer.parseInt(query.data.get("width"));
     			int st_time = Integer.parseInt(query.data.get("st_time"));
     			characteristics chr = new characteristics(height,width,time,status, available, st_time,quantity);
-    			warehouse.AddProduct(id, name, type, room, desk, chr);
-    			outStream.writeUTF(warehouse.ProductsToJSON());
+				if(warehouse.rooms[room-1][desk-1]!=-1) {
+					outStream.writeUTF("selected room is not empty, filled: "
+				+warehouse.products.get(warehouse.rooms[room-1][desk-1]).getId());
+				}
+				else {
+	    			warehouse.AddProduct(id, name, type, room, desk, chr);
+	    			outStream.writeUTF(warehouse.ProductsToJSON());
+				}
 				break;
 			case "EditProduct":
 				int val;
@@ -107,11 +116,33 @@ class ServerConnectionProcessor extends Thread {
 						break;
 					case "room":
 						val = Integer.parseInt(entry.getValue());
-						pr.setRoom(val);
+						if(warehouse.rooms[val-1][pr.getDesk()-1]!=-1) {
+							outStream.writeUTF("selected room is not empty");
+						}
+						else {
+							pr.setRoom(val);
+						}
 						break;
 					case "desk":
 						val = Integer.parseInt(entry.getValue());
-						pr.setDesk(val);
+						if(warehouse.rooms[pr.getRoom()-1][val-1]!=-1) {
+							outStream.writeUTF("selected desk is not empty");
+						}
+						else {
+							pr.setDesk(val);
+						}
+						break;
+					case "roomdesk":
+						String[] loc = entry.getValue().split(" ");
+						int val1 = Integer.parseInt(loc[0]);
+						int val2 = Integer.parseInt(loc[1]);
+						if(warehouse.rooms[val1-1][val2-1]!=-1) {
+							outStream.writeUTF("selected desk is not empty");
+						}
+						else {
+							pr.setRoom(val1);
+							pr.setDesk(val2);
+						}
 						break;
 					case "name":
 						pr.setName(entry.getValue());
@@ -219,15 +250,61 @@ class ServerConnectionProcessor extends Thread {
      			break;
      		case "AddOperation":
          		id = Integer.parseInt(query.data.get("id"));
-    			String date = query.data.get("date");
+         		Date date = format.parse(query.data.get("date")+" 12:00:00 PM");
     			int product = Integer.parseInt(query.data.get("product"));
     			quantity = Integer.parseInt(query.data.get("quantity"));
     			int person = Integer.parseInt(query.data.get("person"));
-    			warehouse.AddOperation(person, product, quantity, id, date);
-    			outStream.writeUTF(warehouse.OperationsToJSON());
+    			type = Integer.parseInt(query.data.get("type"));
+    			int r,d;
+    			if (warehouse.operations.containsKey(id)) {
+					outStream.writeUTF("operation with such id is already present");
+				} else if(!warehouse.persons.containsKey(person)) {
+					outStream.writeUTF("there is no such person");
+				} else {
+					if(warehouse.persons.get(person).getType() == 0 && type == 0) {
+						if(warehouse.products.get(product).getChars().getQuantity()>=quantity) {
+							if(warehouse.products.get(product).getChars().getQuantity()==quantity) {
+								warehouse.products.get(product).getChars().available = false;
+							}
+							warehouse.products.get(product).getChars().setQuantity(
+								warehouse.products.get(product).getChars().getQuantity() - quantity
+						);
+						} else {
+							outStream.writeUTF("quantity is too big");
+						}
+		    			warehouse.AddOperation(person, product, quantity, id, date,type);
+		    			outStream.writeUTF(warehouse.OperationsToJSON());
+					}
+					else if (warehouse.persons.get(person).getType() == 1 && type == 1){
+						warehouse.products.get(product).getChars().setQuantity(
+								warehouse.products.get(product).getChars().getQuantity() + quantity
+						);
+						warehouse.products.get(product).getChars().available = true;
+		    			warehouse.AddOperation(person, product, quantity, id, date,type);
+		    			outStream.writeUTF(warehouse.OperationsToJSON());
+					}
+					else {
+						outStream.writeUTF("error");
+					}
+	    			warehouse.ProductsToJSON();
+				}
     			break;
      		case "ListAllPersons":
      			outStream.writeUTF(warehouse.ProductsToJSON());
+     			break;
+     		case "ShowOperations":
+     			outStream.writeUTF(warehouse.GetDates(query.data.get("from"), query.data.get("to")));
+     			break;
+     		case "IsEmpty":
+     			room = Integer.parseInt(query.data.get("room"));
+     			desk = Integer.parseInt(query.data.get("desk"));
+				if(warehouse.rooms[room-1][desk-1]!=-1) {
+					outStream.writeUTF("selected room is not empty, filled: "
+				+warehouse.products.get(warehouse.rooms[room-1][desk-1]).getId());
+				}
+				else {
+					outStream.writeUTF("selected room is empty");
+				}
      			break;
      		case "exit":
      			loop=false;

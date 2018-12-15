@@ -5,8 +5,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -16,12 +22,36 @@ import com.google.gson.JsonSyntaxException;
 
 
 
-public class warehouse {
+public class warehouse{
 	public static HashMap<Integer,person> persons = new HashMap<Integer,person>();
 	public static HashMap<Integer,product> products = new HashMap<Integer,product>();
 	public static HashMap<Integer,operation> operations = new HashMap<Integer,operation>();
-	static GsonBuilder builder = new GsonBuilder();
-	static Gson gson = builder.create();
+	public transient static DateFormat format = new SimpleDateFormat("MMM d, yyyy HH:mm:ss a", Locale.ENGLISH);
+	public static int [][]rooms = new int [6][10];
+	public static GsonBuilder builder = new GsonBuilder();
+	public static Gson gson = builder.setDateFormat("MMM d, yyyy HH:mm:ss a").create();
+	public static void init(){
+		for (int c=0;c<6;c++) {
+			for (int i=0;i<10;i++) {
+				rooms[c][i]=-1;
+			}
+		}
+		try {
+			JSONtoProduct();
+			JSONtoPerson();
+			JSONtoOperation();
+			RelocateProducts();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public static void RelocateProducts() {
+		for(Map.Entry<Integer, product> entry : products.entrySet()) {
+			product p = entry.getValue();
+			rooms[p.getRoom()-1][p.getDesk()-1] = p.getId();
+		}
+	}
 	public static void JSONtoProduct() throws FileNotFoundException, IOException{
 		  Reader reader = new FileReader("/home/andrew/git/java_tasks/course/products.json");
 		  product[] ps = new Gson().fromJson(reader, product[].class);
@@ -113,12 +143,12 @@ public class warehouse {
 		    persons.put(id, pr);
 		}
 	}
-	public static void AddOperation(int person, int product, int quantity, int id, String date) {
+	public static void AddOperation(int person, int product, int quantity, int id, Date date,int type) {
 		if (operations.containsKey(id)) {
 			//error
 		}
 		else {
-		    operation pr = new operation(person,product,quantity,id,date);
+		    operation pr = new operation(person,product,quantity,id,date,type);
 		    operations.put(id, pr);
 		}
 	}
@@ -143,4 +173,27 @@ public class warehouse {
 		}
 		return gson.toJson(obj);
 	}
+	public static String GetDates(String start,String end) throws ParseException {
+		ArrayList<operation> obj = new ArrayList<operation>();
+		ArrayList<operation> objs = new ArrayList<operation>();
+		Date date1 = null, date2 = null,mdate = null;
+		end+=" 12:00:00 PM";
+		start+=" 12:00:00 PM";
+		for(Map.Entry<Integer, operation> entry : operations.entrySet()) {
+			operation p = entry.getValue();
+			obj.add(p);
+		}
+		Collections.sort(obj);
+		date1 = format.parse(start);
+		date2 = format.parse(end);
+		for(operation op : obj) {
+			mdate=op.getDate();
+			if(mdate.after(date1) && mdate.before(date2)) {
+				objs.add(op);
+			}
+		}
+		
+		return gson.toJson(objs);
+	}
+
 }

@@ -1,5 +1,6 @@
 package app;
 
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -18,14 +19,31 @@ import java.net.Socket;
 
 
 class Client extends JFrame{
-	public Client(){
-		/*JFrame frame = new JFrame("Client app");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-		frame.setLocationRelativeTo(null);*/
+	private JLabel countLabel;
+	private JButton addCrow;
+	private JButton removeCrow;
+	public Client() {
+		super("Client");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(400, 300);
+		setVisible(true);
+		countLabel = new JLabel("Crows:" );
+	    addCrow = new JButton("Add Crow");
+	    removeCrow = new JButton("Remove Crow");
+
+	    //Подготавливаем временные компоненты
+	    JPanel buttonsPanel = new JPanel(new FlowLayout()); 
+	    //Расставляем компоненты по местам
+	    buttonsPanel.add(countLabel, BorderLayout.NORTH); //О размещении компонент поговорим позже
+
+	    buttonsPanel.add(addCrow);
+	    buttonsPanel.add(removeCrow);
+
+	    add(buttonsPanel, BorderLayout.SOUTH);
 	}
 	public static void main(String[] args) throws Exception {
+	    Client app = new Client();
+	    app.setVisible(true);
 		String host = "localhost";
 		int port = 3334;
 		try {
@@ -119,6 +137,20 @@ class Client extends JFrame{
 						query.data.put("quantity", input.nextLine());
 						System.out.println("Введите id клиента");
 						query.data.put("person", input.nextLine());
+						System.out.println("Введите тип операции");
+						query.data.put("type", input.nextLine());
+						break;
+					case "ShowOperations":
+						System.out.println("Введите начальную дату");
+						query.data.put("from", input.nextLine());
+						System.out.println("Введите конечную дату");
+						query.data.put("to", input.nextLine());
+						break;
+					case "IsEmpty":
+						System.out.println("Введите номер помещения");
+						query.data.put("room", input.nextLine());
+						System.out.println("Введите номер полки");
+						query.data.put("desk", input.nextLine());
 						break;
 					case "exit":
 						loop=false;
