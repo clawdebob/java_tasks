@@ -163,8 +163,8 @@ public class warehouse{
 					obj.add(p);
 				}
 				break;
-			case "time":
-				if(p.getChars().getTime() == val) {
+			case "name":
+				if(p.getName() == val) {
 					obj.add(p);
 				}
 				break;
@@ -179,7 +179,6 @@ public class warehouse{
 				}
 				break;
 			}
-			//System.out.println("GSON:" + gson.toJson(p));
 		}
 		return gson.toJson(obj);
 	}

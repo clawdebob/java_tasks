@@ -26,16 +26,27 @@ class Client extends JFrame{
 	private static JButton AddPr;
 	private static JButton SearchPr;
 	private static JButton DeletePr;
+	private static JButton EditPr;
+	private static JButton getAllPer;
+	private static JButton AddPer;
+	private static JButton DeletePer;
+	private static JButton EditPer;
 	private static JPanel panel1;
+	private static JPanel panel2;
+	private static JPanel panel3;
 	private static JPanel form;
 	private static JTabbedPane tabbedPane;
 	private JTable table;
 	private static JTextArea area1;
-	private static JScrollPane scroll;
+	private static JTextArea area2;
+	private static JTextArea area3;
+	private static JScrollPane scroll1;
+	private static JScrollPane scroll2;
+	private static JScrollPane scroll3;
 	public Client() {
 		super("Client");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(1280, 720);
+		setSize(1100, 580);
 		setVisible(true);
 		tabbedPane = new JTabbedPane();
 		area1 = new JTextArea();
@@ -52,28 +63,57 @@ class Client extends JFrame{
                 "Does nothing");
 		tabbedPane.addTab("Операции", null, panel3,
                 "Does nothing");
+	    //Продукты
 		getAllPr = new JButton("Вывести все продукты");
 		AddPr = new JButton("Добавить продукт");
 		SearchPr = new JButton("Найти продукт");
 		DeletePr = new JButton("Удалить продукт");
+		EditPr = new JButton("Редактировать продукт");
 		getAllPr.setSize(250, 30);
 		getAllPr.setLocation(520,10);
 		AddPr.setSize(250, 30);
 		AddPr.setLocation(520,50);
 		SearchPr.setSize(250, 30);
 		SearchPr.setLocation(520,90);
+		EditPr.setSize(250, 30);
+		EditPr.setLocation(520,130);
 		DeletePr.setSize(250, 30);
-		DeletePr.setLocation(520,130);
+		DeletePr.setLocation(520,170);
 		area1.setSize(500, 500);
 		area1.setLocation(10,10);
-		scroll = new JScrollPane(area1,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scroll.setSize(500, 500);
-		scroll.setLocation(10,10);
+		scroll1 = new JScrollPane(area1,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scroll1.setSize(500, 500);
+		scroll1.setLocation(10,10);
 		panel1.add(AddPr);
 	    panel1.add(getAllPr);
 	    panel1.add(SearchPr);
+	    panel1.add(EditPr);
 	    panel1.add(DeletePr);
-	    panel1.add(scroll);
+	    //panel1.add(scroll);
+	    //Персоны
+		getAllPer = new JButton("Вывести всех песрон");
+		AddPer = new JButton("Добавить персону");
+		DeletePer = new JButton("Удалить персону");
+		EditPer = new JButton("Редактировать персону");
+		getAllPer.setSize(250, 30);
+		getAllPer.setLocation(520,10);
+		AddPer.setSize(250, 30);
+		AddPer.setLocation(520,50);
+		EditPer.setSize(250, 30);
+		EditPer.setLocation(520,130);
+		DeletePer.setSize(250, 30);
+		DeletePer.setLocation(520,170);
+		area2.setSize(500, 500);
+		area2.setLocation(10,10);
+		scroll2 = new JScrollPane(area2,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scroll2.setSize(500, 500);
+		scroll2.setLocation(10,10);
+		panel2.add(AddPr);
+	    panel2.add(getAllPr);
+	    panel2.add(SearchPr);
+	    panel2.add(EditPr);
+	    panel2.add(DeletePr);
+	    //panel2.add(scroll);
 	    add(tabbedPane);
 	}
 	public static void main(String[] args) throws Exception {
@@ -99,7 +139,6 @@ class Client extends JFrame{
 						outStream.writeUTF(gson.toJson(query));
 						area1.setText(inStream.readUTF().replace(',', '\n'));	
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}   
@@ -183,10 +222,10 @@ class Client extends JFrame{
 					height.setSize(100, 30);
 					
 					submit.setSize(250, 30);
-					submit.setLocation(10,600);
+					submit.setLocation(10,370);
 
 					form.setLayout(null);
-					form.setSize(270, 700);
+					form.setSize(270, 410);
 					form.setLocation(800,10);
 					form.add(id_l);
 					form.add(id);
@@ -310,7 +349,7 @@ class Client extends JFrame{
 					id.setLocation(110,10);
 					id.setSize(100, 30);
 					form.setLayout(null);
-					form.setSize(270, 200);
+					form.setSize(270, 100);
 					form.setLocation(800,10);
 					form.add(id_l);
 					form.add(submit);
@@ -329,6 +368,225 @@ class Client extends JFrame{
 								outStream.writeUTF(gson.toJson(query));
 								area1.setText(inStream.readUTF().replace(',', '\n'));
 								id.setText("");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					});
+				}   
+		    });
+		    EditPr.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					panel1.remove(form);
+					form.removeAll();
+					app.repaint();
+					Request query = new Request();
+					String []ops = {
+							"Бытовая химия",
+							"Продукты",
+							"Одежда-обувь",
+							"Бытовая электроника"
+					};
+					String []ops2 = {
+							"id",
+							"name",
+							"type",
+							"quantity",
+							"st_time",
+							"width",
+							"height",
+							"room",
+							"desk",
+							"roomdesk"
+					};
+					JComboBox param = new JComboBox(ops2);
+					JComboBox type = new JComboBox(ops);
+					JTextField value = new JTextField();
+					JTextField id = new JTextField();
+					
+					boolean state = false;
+					JButton submit = new JButton("Применить");
+					JLabel param_l = new JLabel("Параметр:");
+					JLabel id_l = new JLabel("Id продукта:");
+					JLabel val_l = new JLabel("Значение:");
+					form = new JPanel();
+					param_l.setSize(100, 30);
+					param_l.setLocation(10,10);
+					id_l.setLocation(10,50);
+					id_l.setSize(100, 30);
+					id.setLocation(110,50);
+					id.setSize(100, 30);
+					val_l.setLocation(10,90);
+					val_l.setSize(100, 30);
+					value.setSize(100, 30);
+					value.setLocation(110, 90);
+					type.setSize(100, 30);
+					type.setLocation(110, 90);
+					submit.setSize(250, 30);
+					submit.setLocation(10,130);
+					param.setLocation(110,10);
+					param.setSize(100, 30);
+					form.setLayout(null);
+					form.setSize(270, 170);
+					form.setLocation(800,10);
+					form.add(param_l);
+					form.add(val_l);
+					form.add(id_l);
+					form.add(id);
+					form.add(submit);
+					form.add(value);
+					form.add(param);
+					form.setBackground(Color.WHITE); 
+					panel1.add(form);
+					app.repaint();
+					app.add(tabbedPane);
+					param.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							if((String) param.getSelectedItem() == "type") {
+								form.remove(value);
+								form.add(type);
+							}else {
+								if(type.getParent()!=null) {
+									form.remove(type);
+									form.add(value);
+								}
+							}
+							app.repaint();
+						}
+					});
+					submit.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							query.type = "EditProduct";
+							if((String) param.getSelectedItem() == "type") {
+								switch((String) type.getSelectedItem()) {
+								case "Бытовая химия":
+									query.data.put("type", "0");
+									break;
+								case "Продукты":
+									query.data.put("type", "1");
+									break;
+								case "Одежда-обувь":
+									query.data.put("type", "3");
+									break;
+								case "Бытовая электроника":
+									query.data.put("type", "4");
+									break;
+								}
+							}
+							else {
+								query.data.put((String) param.getSelectedItem(), value.getText());
+								value.setText("");
+							}
+							try {
+								query.data.put("product", id.getText());
+								outStream.writeUTF(gson.toJson(query));
+								area1.setText(inStream.readUTF().replace(',', '\n'));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					});
+				}   
+		    });
+		    SearchPr.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					panel1.remove(form);
+					form.removeAll();
+					app.repaint();
+					Request query = new Request();
+					String []ops = {
+							"Бытовая химия",
+							"Продукты",
+							"Одежда-обувь",
+							"Бытовая электроника"
+					};
+					String []ops2 = {
+							"room",
+							"desk",
+							"name",
+							"type",
+					};
+					JComboBox param = new JComboBox(ops2);
+					JComboBox type = new JComboBox(ops);
+					JTextField value = new JTextField();
+					boolean state = false;
+					JButton submit = new JButton("Поиск");
+					JLabel id_l = new JLabel("Пареметр:");
+					JLabel val_l = new JLabel("Значение:");
+					form = new JPanel();
+					id_l.setSize(100, 30);
+					id_l.setLocation(10,10);
+					val_l.setLocation(10,50);
+					val_l.setSize(100, 30);
+					value.setSize(100, 30);
+					value.setLocation(110, 50);
+					type.setSize(100, 30);
+					type.setLocation(110, 50);
+					submit.setSize(250, 30);
+					submit.setLocation(10,90);
+					param.setLocation(110,10);
+					param.setSize(100, 30);
+					form.setLayout(null);
+					form.setSize(270, 130);
+					form.setLocation(800,10);
+					form.add(id_l);
+					form.add(val_l);
+					form.add(submit);
+					form.add(value);
+					form.add(param);
+					form.setBackground(Color.WHITE); 
+					panel1.add(form);
+					app.repaint();
+					app.add(tabbedPane);
+					param.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							if((String) param.getSelectedItem() == "type") {
+								form.remove(value);
+								form.add(type);
+							}else {
+								if(type.getParent()!=null) {
+									form.remove(type);
+									form.add(value);
+								}
+							}
+							app.repaint();
+						}
+					});
+					submit.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							query.type = "SearchProduct";
+							query.data.put("param", (String) param.getSelectedItem());
+							if((String) param.getSelectedItem() == "type") {
+								switch((String) type.getSelectedItem()) {
+								case "Бытовая химия":
+									query.data.put("value", "0");
+									break;
+								case "Продукты":
+									query.data.put("value", "1");
+									break;
+								case "Одежда-обувь":
+									query.data.put("value", "3");
+									break;
+								case "Бытовая электроника":
+									query.data.put("value", "4");
+									break;
+								}
+							}
+							else {
+								query.data.put("value", value.getText());
+								value.setText("");
+							}
+							try {
+								outStream.writeUTF(gson.toJson(query));
+								area1.setText(inStream.readUTF().replace(',', '\n'));
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -429,12 +687,12 @@ class Client extends JFrame{
 						System.out.println("Введите конечную дату");
 						query.data.put("to", input.nextLine());
 						break;
-					case "SearchProduct":
+					/*case "SearchProduct":
 						System.out.println("Введите параметр");
 						query.data.put("param", input.nextLine());
 						System.out.println("Введите значение");
 						query.data.put("value", input.nextLine());
-						break;
+						break;*/
 					case "IsEmpty":
 						System.out.println("Введите номер помещения");
 						query.data.put("room", input.nextLine());
