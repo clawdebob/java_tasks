@@ -255,7 +255,7 @@ class ServerConnectionProcessor extends Thread {
      			break;
      		case "AddOperation":
          		id = Integer.parseInt(query.data.get("id"));
-         		Date date = format.parse(query.data.get("date")+" 12:00:00 PM");
+         		Date date = format.parse(query.data.get("date"));
     			int product = Integer.parseInt(query.data.get("product"));
     			quantity = Integer.parseInt(query.data.get("quantity"));
     			int person = Integer.parseInt(query.data.get("person"));
@@ -295,7 +295,10 @@ class ServerConnectionProcessor extends Thread {
 				}
     			break;
      		case "ListAllPersons":
-     			outStream.writeUTF(warehouse.ProductsToJSON());
+     			outStream.writeUTF(warehouse.PersonsToJSON());
+     			break;
+     		case "ListAllOperations":
+     			outStream.writeUTF(warehouse.OperationsToJSON());
      			break;
      		case "ShowOperations":
      			outStream.writeUTF(warehouse.GetDates(query.data.get("from"), query.data.get("to")));
