@@ -314,6 +314,17 @@ class ServerConnectionProcessor extends Thread {
 					outStream.writeUTF("selected room is empty");
 				}
      			break;
+     		case "free":
+     			String result = "";
+     			for(int c=0;c<6;c++) {
+     				for(int i=0;i<10;i++) {
+     					if(warehouse.rooms[c][i]==-1) {
+     						result +="room: "+ (c+1) +" desk: " + (i+1) + ";";
+     					}
+     				}
+     			}
+     			outStream.writeUTF(result);
+     			break;
      		case "exit":
      			loop=false;
      			outStream.writeUTF("Session is over");

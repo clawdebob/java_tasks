@@ -31,6 +31,7 @@ class Client extends JFrame{
 	public transient static DateFormat format = new SimpleDateFormat("MMM d, yyyy HH:mm:ss a", Locale.ENGLISH);
 	private static JButton getAllPr;
 	private static JButton AddPr;
+	private static JButton free;
 	private static JButton CheckPr;
 	private static JButton SearchPr;
 	private static JButton DeletePr;
@@ -87,6 +88,7 @@ class Client extends JFrame{
 		DeletePr = new JButton("Удалить продукт");
 		EditPr = new JButton("Редактировать продукт");
 		CheckPr = new JButton("Проверить место");
+		free = new JButton("Свободные места");
 		getAllPr.setSize(250, 30);
 		getAllPr.setLocation(520,10);
 		AddPr.setSize(250, 30);
@@ -99,11 +101,14 @@ class Client extends JFrame{
 		DeletePr.setLocation(520,170);
 		CheckPr.setSize(250, 30);
 		CheckPr.setLocation(520,210);
+		free.setSize(250, 30);
+		free.setLocation(520,250);
 		area1.setSize(500, 500);
 		area1.setLocation(10,10);
 		scroll1 = new JScrollPane(area1,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scroll1.setSize(500, 500);
 		scroll1.setLocation(10,10);
+		panel1.add(free);
 		panel1.add(AddPr);
 	    panel1.add(getAllPr);
 	    panel1.add(SearchPr);
@@ -167,6 +172,19 @@ class Client extends JFrame{
 			DataOutputStream outStream = new DataOutputStream(sock.getOutputStream());
 			DataInputStream inStream = new DataInputStream(sock.getInputStream());
 			Request query = new Request();
+			free.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					Request query = new Request();
+					query.type = "free";
+					try {
+						outStream.writeUTF(gson.toJson(query));
+						area1.setText(inStream.readUTF().replace(';', '\n'));	
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}   
+		    });
 			getAllPer.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
